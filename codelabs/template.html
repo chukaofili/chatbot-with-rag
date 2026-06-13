@@ -1,8 +1,9 @@
 <!doctype html>
 <!--
   Custom claat HTML template for the labs site.
-  Identical to claat's built-in 'html' template, with two extra attributes on
-  <google-codelab> so the codelab-elements render the "About this codelab" block:
+  Identical to claat's built-in 'html' template, except we inject a
+  <google-codelab-about> element into the first step so the codelab-elements
+  render the "About this codelab" block (the parent step adopts it):
     authors=...        -> "Written by <authors>"   (from the `authors:` metadata)
     last-updated=...   -> "Last updated <date>"     (set automatically on export)
 -->
@@ -31,12 +32,11 @@
                   id="{{.Meta.ID}}"
                   title="{{.Meta.Title}}"
                   environment="{{index .Env}}"
-                  feedback-link="{{.Meta.Feedback}}"
-                  authors="{{.Meta.Authors}}"
-                  last-updated="{{.Updated}}">
+                  feedback-link="{{.Meta.Feedback}}">
     {{range $i, $e := .Steps}}{{if matchEnv .Tags $.Env}}
       <google-codelab-step label="{{.Title}}" duration="{{.Duration.Minutes}}">
-        {{.Content | renderHTML $.Context}}
+        {{if eq $i 0}}<google-codelab-about authors="{{$.Meta.Authors}}" last-updated="{{$.Updated}}"></google-codelab-about>
+        {{end}}{{.Content | renderHTML $.Context}}
       </google-codelab-step>
     {{end}}{{end}}
   </google-codelab>

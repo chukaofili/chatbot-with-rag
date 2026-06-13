@@ -12,8 +12,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // System instruction lives in docs/prompts/step_5.txt so it stays in sync with
 // the prompt taught in the codelab (Step 5).
 const systemInstruction = readFileSync(
-  join(__dirname, "../docs/prompts/step_5.txt"),
-  "utf-8"
+  join(__dirname, "../docs/prompts/step_2.txt"),
+  "utf-8",
 ).trim();
 
 // Stream one user message through the chat session and print the reply as it
@@ -47,16 +47,25 @@ async function send(chat, message) {
 
 async function main() {
   const ai = new GoogleGenAI({});
+  const MODEL = "gemini-3.5-flash";
+  const storeName = process.env.FILE_SEARCH_STORE;
+  if (!storeName) {
+    console.error(
+      "Set FILE_SEARCH_STORE in .env to the store you built with upload.js.",
+    );
+    process.exit(1);
+  }
+  console.log(`Using existing store: ${storeName}`);
 
   // ai.chats.create() is the SDK's chat harness — it tracks conversation
   // history so each sendMessage builds on the previous turns.
   const chat = ai.chats.create({
-    model: "gemini-3.5-flash",
+    model: MODEL,
     config: {
       thinkingConfig: {
         thinkingLevel: ThinkingLevel.MEDIUM,
       },
-      tools: [{ googleSearch: {} }],
+      tools: [{ fileSearch: { fileSearchStoreNames: [storeName] } }],
       systemInstruction: [{ text: systemInstruction }],
     },
   });
@@ -70,7 +79,9 @@ async function main() {
 
   // Interactive mode: chat back and forth until the user exits.
   const rl = createInterface({ input, output });
-  console.log('Chat with the Interstellar Labs assistant. Type "exit" to quit.');
+  console.log(
+    'Chat with the Interstellar Labs assistant. Type "exit" to quit.',
+  );
   try {
     while (true) {
       const message = (await rl.question("\nYou: ")).trim();

@@ -5,6 +5,7 @@ import { stdin as input, stdout as output } from "node:process";
 import { createInterface } from "node:readline/promises";
 import { fileURLToPath } from "node:url";
 import { GoogleGenAI, ThinkingLevel } from "@google/genai";
+import ora from "ora";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -19,12 +20,29 @@ const systemInstruction = readFileSync(
 // arrives. The `chat` object keeps the running history for us, so follow-up
 // messages stay in context automatically.
 async function send(chat, message) {
-  const stream = await chat.sendMessageStream({ message });
-  output.write("\nAssistant: ");
-  for await (const chunk of stream) {
-    if (chunk.text) output.write(chunk.text);
-  }
+  // Spin while we wait for the model. Streaming means the promise resolves
+  // before all tokens arrive, so we keep spinning until the FIRST chunk of text
+  // lands, then stop and start printing.
   output.write("\n");
+  const spinner = ora("Thinking").start();
+  try {
+    const stream = await chat.sendMessageStream({ message });
+    let started = false;
+    for await (const chunk of stream) {
+      if (!chunk.text) continue;
+      if (!started) {
+        spinner.stop();
+        output.write("Assistant: ");
+        started = true;
+      }
+      output.write(chunk.text);
+    }
+    if (!started) spinner.stop(); // empty response — clear the spinner anyway
+    output.write("\n");
+  } catch (err) {
+    spinner.stop();
+    throw err;
+  }
 }
 
 async function main() {

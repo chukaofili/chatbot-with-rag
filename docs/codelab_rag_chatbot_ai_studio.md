@@ -124,55 +124,25 @@ AI Studio isn't a website builder—it is a prototyping sandbox. Now that your a
 3. Click the **Get API key** button (usually in the left navigation menu) to generate a secure key for your workspace.
 4. **The Handoff:** Copy that code snippet, your API key, and the raw PDF files. Hand them to your developer.
 
-**Founder Note on your Uploaded Files:** When you click "Get Code," AI Studio does not download the PDFs you uploaded. Your developer will need to use the Gemini File API to upload them into your app's environment. You can give them this exact Node.js script to get them started testing locally:
+**Founder Note on your Uploaded Files:** When you click "Get Code," AI Studio does not download the PDFs you uploaded. Your developer will need to re-upload them into your app's environment with the Gemini API. This repo ships two ready-to-run Node.js scripts in [`scripts/`](../scripts/) that do exactly that, using the current `@google/genai` SDK and the **File Search** tool — the same retrieval-with-citations you built in the playground.
 
-```javascript
-// upload_and_chat.js
-// Usage: node upload_and_chat.js ./path/to/your/startup_handbook.pdf
-// Tell your dev to install the SDK: npm install @google/generative-ai
-const { GoogleAIFileManager } = require("@google/generative-ai/server");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+The flow is two steps:
 
-// Initialize with your API Key
-const fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY);
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+1. **[`scripts/upload.js`](../scripts/upload.js)** — indexes your documents into a File Search store once.
+2. **[`scripts/search.js`](../scripts/search.js)** — queries that store for grounded, cited answers as many times as you like.
 
-async function run() {
-  // Get the file path from the command line arguments
-  const filePath = process.argv[2];
+Hand your developer this repo and point them at [`scripts/`](../scripts/):
 
-  if (!filePath) {
-    console.error("Error: Please provide a file path.");
-    console.error("Usage: node upload_and_chat.js <path-to-document.pdf>");
-    process.exit(1);
-  }
+```bash
+cd scripts
+npm install                   # installs @google/genai and dotenv
+cp .env.example .env          # then set GEMINI_API_KEY (get one at aistudio.google.com/apikey)
 
-  console.log(`Uploading ${filePath}...`);
+# 1. Index the documents into a File Search store
+node upload.js ../knowledge-base/pdfs/*.pdf
 
-  // 1. Upload the startup document via the API
-  const uploadResult = await fileManager.uploadFile(filePath, {
-    mimeType: "application/pdf", // Assumes PDF for this example
-    displayName: "Startup Knowledge Base",
-  });
-  console.log(`Successfully uploaded file as: ${uploadResult.file.uri}`);
-
-  console.log("Asking the model a question based on the document...");
-
-  // 2. Pass the document AND the user's question to the model
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-  const result = await model.generateContent([
-    "What is our refund window for annual plans? If it is not in the document, say you don't know.",
-    {
-      fileData: {
-        fileUri: uploadResult.file.uri,
-        mimeType: uploadResult.file.mimeType,
-      },
-    },
-  ]);
-
-  console.log("\n--- AI Response ---");
-  console.log(result.response.text());
-}
-
-run();
+# 2. Paste the FILE_SEARCH_STORE id it prints into .env, then ask questions
+node search.js
 ```
+
+Unlike stuffing a whole PDF into every request, File Search retrieves **only the relevant chunks** and returns **citations** — so the answer stays grounded and your token costs stay low as the knowledge base grows. See [`scripts/upload.js`](../scripts/upload.js) and [`scripts/search.js`](../scripts/search.js) for the full, commented source.

@@ -152,6 +152,8 @@ node search.js "What is our refund window for annual plans?"
 
 Unlike stuffing a whole PDF into every request, File Search retrieves **only the relevant chunks** and returns **citations** - so the answer stays grounded and your token costs stay low as the knowledge base grows. See [`scripts/upload.js`](../scripts/upload.js) and [`scripts/search.js`](../scripts/search.js) for the full, commented source.
 
+Need to start over or clear out duplicate documents? [`scripts/cleanup.js`](../scripts/cleanup.js) tears down the store (`node cleanup.js --yes`) or just empties it while keeping the id (`node cleanup.js --docs --yes`); run it with no flags first for a safe dry-run preview.
+
 **Developer Reference for Bulk Uploads:**
 If you have a massive folder of documents, tell your developers to review the **[Gemini API File Search Guide](https://ai.google.dev/gemini-api/docs/file-search)** and the **[File API documentation](https://ai.google.dev/api/files)**. The API allows up to 20GB of stored files per project, and developers can easily extend [`scripts/upload.js`](../scripts/upload.js) to bulk-index an entire directory of company data at once.
 

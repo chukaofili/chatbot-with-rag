@@ -82,8 +82,8 @@ async function run() {
   console.log(
     `\nIndexed ${indexed} file(s)${skipped ? `, skipped ${skipped} already present` : ""}.`,
   );
-  console.log(`\nQuery this knowledge base with:`);
-  console.log(`  FILE_SEARCH_STORE=${storeName} node search.js`);
+  console.log(`\nSet this in your .env, then query with search.js or agent.js:`);
+  console.log(`  FILE_SEARCH_STORE=${storeName}`);
 }
 
 run().catch((err) => {

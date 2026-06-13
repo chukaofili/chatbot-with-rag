@@ -29,6 +29,7 @@ chatbot-with-rag/
     ├── upload.js                               # Index docs into a File Search store
     ├── search.js                               # Query the store with grounded, cited answers
     ├── agent.js                                # Interactive multi-turn chat agent
+    ├── cleanup.js                              # Delete the store or clear its documents
     ├── package.json                            # @google/genai dependency + npm scripts
     └── .env.example                            # API key + File Search store id
 ```
@@ -76,6 +77,19 @@ npm run agent
 
 # Or one-shot:
 npm run agent -- "What is your refund policy?"
+```
+
+- [`scripts/cleanup.js`](scripts/cleanup.js) — tears down the `FILE_SEARCH_STORE` to reset between runs or clear duplicate documents. Safe by default: with no flags it's a **dry run** that lists what would be deleted. Pass `--yes` to delete the whole store, or `--docs --yes` to empty it but keep the store id valid.
+
+```bash
+# Preview what's in the store (deletes nothing):
+npm run cleanup
+
+# Delete the whole store:
+npm run cleanup -- --yes
+
+# Keep the store, just remove its documents:
+npm run cleanup -- --docs --yes
 ```
 
 Get an API key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).

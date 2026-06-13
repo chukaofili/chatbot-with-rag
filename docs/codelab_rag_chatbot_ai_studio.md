@@ -146,3 +146,35 @@ node search.js
 ```
 
 Unlike stuffing a whole PDF into every request, File Search retrieves **only the relevant chunks** and returns **citations** — so the answer stays grounded and your token costs stay low as the knowledge base grows. See [`scripts/upload.js`](../scripts/upload.js) and [`scripts/search.js`](../scripts/search.js) for the full, commented source.
+
+**Developer Reference for Bulk Uploads:**
+If you have a massive folder of documents, tell your developers to review the **[Gemini API File Search Guide](https://ai.google.dev/gemini-api/docs/file-search)** and the **[File API documentation](https://ai.google.dev/api/files)**. The API allows up to 20GB of stored files per project, and developers can easily extend [`scripts/upload.js`](../scripts/upload.js) to bulk-index an entire directory of company data at once.
+
+---
+
+## Step 7 — Advanced: Connect to live databases with MCP (Roadmap)
+
+Right now, your bot answers from static PDFs and public Google Searches. But what if you want it to check a live user's account balance in Stripe, read a live Jira ticket, or pull data from your private Slack channels?
+
+To do this, your engineering team can use the **Model Context Protocol (MCP)**.
+
+**What is MCP?**
+It is an open-source standard that acts like a secure, universal plug adapter between AI models and your company's private data sources. Instead of manually uploading PDFs, an MCP server lets the AI safely query your actual databases or internal APIs in real-time.
+
+**The Founder's Next Step:**
+Setting up MCP requires backend engineering. When you are ready to move beyond static document grounding and into live system integration, give your engineering team this objective:
+
+> _"Look into setting up an MCP server for our internal APIs. We want to give our Gemini bot secure tool-access to our live databases."_
+
+---
+
+## You did it 🎉
+
+You built a grounded "chat with your docs" assistant with **zero code**. You now understand:
+
+- Why a raw model can't answer business-specific questions
+- How to write strong System Instructions to prevent hallucination
+- How to upload your documents directly into the model's long context
+- How to turn live web grounding on and off
+- The path from prototype → exact code → engineering handoff
+- How to scale into live database connections using MCP

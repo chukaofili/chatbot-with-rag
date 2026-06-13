@@ -11,8 +11,9 @@
 //   # Add files to an existing store (reuse it across runs):
 //   GEMINI_API_KEY=your_key  FILE_SEARCH_STORE=fileSearchStores/kb-123  node upload.js ./new-doc.pdf
 //
-// Install: npm install @google/genai
+// Install: npm install @google/genai dotenv
 
+import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
 
 // The SDK reads GEMINI_API_KEY (or GOOGLE_API_KEY) from the environment.

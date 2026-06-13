@@ -12,8 +12,9 @@
 //   GEMINI_API_KEY=your_key  node search.js ./knowledge-base/*.md
 //
 //   # Override the question with the QUESTION env var.
-// Install: npm install @google/genai
+// Install: npm install @google/genai dotenv
 
+import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
 
 // The SDK reads GEMINI_API_KEY (or GOOGLE_API_KEY) from the environment.

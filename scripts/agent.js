@@ -9,8 +9,10 @@ import ora from "ora";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// System instruction lives in docs/prompts/step_5.txt so it stays in sync with
-// the prompt taught in the codelab (Step 5).
+// System instruction lives in docs/prompts/step_2.txt so it stays in sync with
+// the docs-only prompt taught in the codelab (Step 2). File Search grounds the
+// answers in the knowledge base, so we use the docs-only prompt (not the Step 5
+// web-grounding one).
 const systemInstruction = readFileSync(
   join(__dirname, "../docs/prompts/step_2.txt"),
   "utf-8",

@@ -141,8 +141,8 @@ cp .env.example .env          # then set GEMINI_API_KEY (get one at aistudio.goo
 # 1. Index the documents into a File Search store
 node upload.js ../knowledge-base/pdfs/*.pdf
 
-# 2. Paste the FILE_SEARCH_STORE id it prints into .env, then ask questions
-node search.js
+# 2. Paste the FILE_SEARCH_STORE id it prints into .env, then ask a question
+node search.js "What is our refund window for annual plans?"
 ```
 
 Unlike stuffing a whole PDF into every request, File Search retrieves **only the relevant chunks** and returns **citations** — so the answer stays grounded and your token costs stay low as the knowledge base grows. See [`scripts/upload.js`](../scripts/upload.js) and [`scripts/search.js`](../scripts/search.js) for the full, commented source.

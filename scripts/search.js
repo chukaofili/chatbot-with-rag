@@ -10,9 +10,9 @@
 // never indexes.
 //
 // Usage:
-//   node search.js
+//   node search.js "What is our refund window for annual plans?"
 //
-//   # Override the question via .env (QUESTION=...) or inline: QUESTION="..." node search.js
+//   # With no question, it falls back to a default demo question.
 
 import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
@@ -22,8 +22,10 @@ const ai = new GoogleGenAI({});
 
 const MODEL = "gemini-3.5-flash"; // supports File Search (current as of June 2026)
 
+// Take the question from the command line (everything after the script name),
+// falling back to a default demo question when none is given.
 const QUESTION =
-  process.env.QUESTION ||
+  process.argv.slice(2).join(" ").trim() ||
   "What is our refund window for annual plans?";
 
 const SYSTEM_INSTRUCTION =
@@ -40,7 +42,8 @@ async function run() {
     );
     process.exit(1);
   }
-  console.log(`Querying store: ${storeName}\n`);
+  console.log(`Querying store: ${storeName}`);
+  console.log(`Question: ${QUESTION}\n`);
 
   // Ask. The fileSearch tool retrieves the relevant chunks and grounds the answer.
   // (Note: File Search can't be combined with Google Search grounding or URL

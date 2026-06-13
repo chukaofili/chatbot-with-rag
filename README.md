@@ -57,14 +57,14 @@ cp .env.example .env          # then set GEMINI_API_KEY (loaded automatically vi
 # 1. Index the knowledge base into a File Search store
 npm run upload -- ../knowledge-base/pdfs/*.pdf
 
-# 2. Paste the FILE_SEARCH_STORE id printed by step 1 into .env, then query it
-npm run search
+# 2. Paste the FILE_SEARCH_STORE id printed by step 1 into .env, then ask a question
+npm run search -- "What is our refund window for annual plans?"
 ```
 
 The scripts load your `.env` via [dotenv](https://github.com/motdotla/dotenv), so once `GEMINI_API_KEY` and `FILE_SEARCH_STORE` are set there you don't need to pass them on the command line.
 
 - [`scripts/upload.js`](scripts/upload.js) — creates (or reuses) a File Search store and indexes the files you pass it, then prints the store id for `.env`.
-- [`scripts/search.js`](scripts/search.js) — queries the store in `FILE_SEARCH_STORE`, prints a grounded answer and the source documents it cited. Override the prompt by setting `QUESTION` in `.env` (or inline).
+- [`scripts/search.js`](scripts/search.js) — queries the store in `FILE_SEARCH_STORE` with the question you pass on the command line (`npm run search -- "your question"`), prints a grounded answer and the source documents it cited.
 
 Get an API key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
 

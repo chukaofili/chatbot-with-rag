@@ -3,6 +3,7 @@
 **Session:** 2026 GFSAA - Build with Gemini and Google's generative language models  
 **Duration:** 60 min  
 **Audience:** Mixed GFSAA founders & builders, varied coding levels  
+**Slides:** [Build with Gemini — RAG Workshop (Google Slides)](https://docs.google.com/presentation/d/1cFVxBTA-jEGInwmGqipLam65ZoXknT5oC2-ZhiJptMU/edit?usp=sharing)  
 **Goal:** Every attendee leaves with a working, grounded "chat with your docs" assistant built in Google AI Studio and the mental model to take it to their product
 
 ---

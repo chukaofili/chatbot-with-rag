@@ -9,7 +9,6 @@ RAG (Retrieval-Augmented Generation) connects a great model to _your_ content so
 ```
 chatbot-with-rag/
 ├── docs/                                       # Run-the-session materials
-│   ├── Build_with_Gemini_RAG_Workshop.pptx     # 10-slide deck
 │   ├── codelab.md                              # Step-by-step hands-on guide
 │   ├── speaker-notes.md                        # Minute-by-minute run of show
 │   └── prompts/                                # System-instruction prompts from the codelab

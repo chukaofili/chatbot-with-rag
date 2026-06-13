@@ -12,6 +12,9 @@
 //
 //   # Add files to an existing store (reuse it across runs):
 //   node upload.js ./new-doc.pdf
+//
+// Idempotent: re-running skips any file already indexed in the store (matched by
+// display name), so you won't get duplicate copies of the same document.
 
 import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
@@ -27,10 +30,16 @@ async function run() {
   }
 
   // 1. Reuse an existing store if one was passed, otherwise create a new one.
-  //    The store persists until you delete it (raw files expire after 48h).
+  //    The store persists until you delete it.
   let storeName = process.env.FILE_SEARCH_STORE;
+  const indexedNames = new Set();
   if (storeName) {
     console.log(`Using existing store: ${storeName}`);
+    // List what's already indexed so re-runs don't create duplicate documents.
+    // (uploadToFileSearchStore always adds a new doc — it never dedupes.)
+    for await (const doc of await ai.documents.list({ parent: storeName })) {
+      if (doc.displayName) indexedNames.add(doc.displayName);
+    }
   } else {
     const store = await ai.fileSearchStores.create({
       config: {
@@ -42,22 +51,35 @@ async function run() {
     console.log(`Created File Search store: ${storeName}`);
   }
 
-  // 2. Upload + index each file. Indexing is async, so we poll the operation
-  //    until it reports done.
+  // 2. Upload + index each file, skipping any already present. Indexing is
+  //    async, so we poll the operation until it reports done.
+  let indexed = 0;
+  let skipped = 0;
   for (const file of files) {
+    const displayName = file.split("/").pop();
+    if (indexedNames.has(displayName)) {
+      console.log(`Skipping ${displayName} — already indexed.`);
+      skipped++;
+      continue;
+    }
+
     console.log(`Indexing ${file} ...`);
     let op = await ai.fileSearchStores.uploadToFileSearchStore({
       file,
       fileSearchStoreName: storeName,
-      config: { displayName: file.split("/").pop() },
+      config: { displayName },
     });
     while (!op.done) {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       op = await ai.operations.get({ operation: op });
     }
+    indexedNames.add(displayName); // guard against duplicate basenames in one run
+    indexed++;
   }
 
-  console.log(`\nIndexed ${files.length} file(s).`);
+  console.log(
+    `\nIndexed ${indexed} file(s)${skipped ? `, skipped ${skipped} already present` : ""}.`,
+  );
   console.log(`\nQuery this knowledge base with:`);
   console.log(`  FILE_SEARCH_STORE=${storeName} node search.js`);
 }

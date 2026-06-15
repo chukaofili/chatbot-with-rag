@@ -1,6 +1,6 @@
 # chatbot-with-rag
 
-A hands-on, **no-code workshop** for building a grounded "chat with your docs" assistant (RAG) using **Google AI Studio** and Gemini, built for the **2026 GFSAA** session _"Build with Gemini and Google's generative language models."_
+A hands-on, **low-code workshop** for building a grounded "chat with your docs" assistant (RAG) using **Google AI Studio** and Gemini, built for the **2026 GFSAA** session _"Build with Gemini and Google's generative language models."_
 
 RAG (Retrieval-Augmented Generation) connects a great model to _your_ content so it answers from your documents instead of guessing. This repo has everything to run the session: the workshop materials, a ready-made sample knowledge base to point File Search at, and code samples that do the same thing with the Gemini API.
 

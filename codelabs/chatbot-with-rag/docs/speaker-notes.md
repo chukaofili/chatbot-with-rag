@@ -1,4 +1,4 @@
-# Facilitator Notes — Build with Gemini (RAG chatbot, no-code)
+# Facilitator Notes — Build with Gemini (RAG chatbot, low-code)
 
 **Session:** 2026 GFSAA - Build with Gemini and Google's generative language models  
 **Duration:** 60 min  

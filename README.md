@@ -7,7 +7,7 @@ Browse them live at **<https://chukaofili.github.io/labs/>**.
 
 | Codelab                                                                                              | What you build                                                                                                                                                                                     |
 | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Build a "Chat With Your Docs" Assistant (RAG)](https://chukaofili.github.io/labs/chatbot-with-rag/) | A grounded "chat with your docs" assistant — no code in Google AI Studio, then to production with the Gemini API + File Search. Source: [`codelabs/chatbot-with-rag/`](codelabs/chatbot-with-rag/) |
+| [Build a "Chat With Your Docs" Assistant (RAG)](https://chukaofili.github.io/labs/chatbot-with-rag/) | A grounded "chat with your docs" assistant — low code, no vector DB: built in Google AI Studio, then to production with the Gemini API + File Search. Source: [`codelabs/chatbot-with-rag/`](codelabs/chatbot-with-rag/) |
 
 ## Repository layout
 

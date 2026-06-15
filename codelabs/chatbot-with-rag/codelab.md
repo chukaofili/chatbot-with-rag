@@ -6,7 +6,7 @@ environments: Web
 status: Published
 feedback link: https://github.com/chukaofili/labs/issues
 
-# Build a "Chat With Your Docs" Assistant — No Code, in Google AI Studio
+# Build a "Chat With Your Docs" Assistant — Low Code, No Vector DB, in Google AI Studio
 
 ## Overview
 Duration: 0:02:00
